@@ -1,0 +1,51 @@
+def auto_key_encrypt(plaintext, key):
+    ciphertext = ""
+    key = key.upper() 
+    full_key = key 
+
+    for i in range(len(plaintext)):
+        p = plaintext[i]
+        if p.isalpha():
+            shift = ord(full_key[i]) - 65
+            base = ord('A') if p.isupper() else ord('a')
+            c = (ord(p.upper()) - 65 + shift) % 26
+            ciphertext += chr(c + base)
+            full_key += p.upper()
+        else:
+            ciphertext += p  
+
+    return ciphertext
+
+def auto_key_decrypt(ciphertext, key):
+    plaintext = ""
+    key = key.upper() 
+    full_key = key  
+
+    for i in range(len(ciphertext)):
+        c = ciphertext[i]
+        if c.isalpha():
+            shift = ord(full_key[i]) - 65
+            base = ord('A') if c.isupper() else ord('a')
+            p = (ord(c.upper()) - 65 - shift) % 26
+            plaintext += chr(p + base)
+            full_key += chr(p + 65)
+        else:
+            plaintext += c
+
+    return plaintext
+
+# -------- User Input --------
+choice = input("Encrypt or Decrypt? (e/d): ").lower()
+text = input("Enter text: ")
+key = input("Enter initial key (A-Z only): ")
+
+if choice == 'e':
+    result = auto_key_encrypt(text, key)
+    print("Encrypted text:", result)
+
+elif choice == 'd':
+    result = auto_key_decrypt(text, key)
+    print("Decrypted text:", result)
+
+else:
+    print("❌ Invalid choice. Type 'e' or 'd'")
